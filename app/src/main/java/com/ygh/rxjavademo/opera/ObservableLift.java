@@ -22,4 +22,5 @@ public class ObservableLift<T, J> extends Observable<J> implements Observer<T> {
         Observer<T> apply = operator.apply(observer);
         parent.subscribe(apply);
     }
+
 }

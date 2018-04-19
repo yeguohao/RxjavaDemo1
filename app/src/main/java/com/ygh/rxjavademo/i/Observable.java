@@ -1,6 +1,7 @@
 package com.ygh.rxjavademo.i;
 
 
+import com.ygh.rxjavademo.opera.Combine;
 import com.ygh.rxjavademo.opera.Fun1;
 import com.ygh.rxjavademo.opera.LambdaObserver;
 import com.ygh.rxjavademo.opera.ObservableCreate;
@@ -10,6 +11,7 @@ import com.ygh.rxjavademo.opera.ObservableMap;
 import com.ygh.rxjavademo.opera.ObservableObserveOn;
 import com.ygh.rxjavademo.opera.ObservableOperator;
 import com.ygh.rxjavademo.opera.ObservableSubscribeOn;
+import com.ygh.rxjavademo.opera.ObservableZip;
 
 public class Observable<T> {
 
@@ -30,6 +32,10 @@ public class Observable<T> {
         return new ObservableLift<>(this,operator);
     }
 
+    public static <J> Observable<J> zip(Observable<?> source1, Observable<?> source2, Combine<J> combine) {
+        return new ObservableZip<>(source1, source2, combine);
+    }
+
     public LambdaObserver<T> subscribe(Observer<T> observer) {
         return new LambdaObserver<>(this,observer);
     }
@@ -45,4 +51,5 @@ public class Observable<T> {
     public void subscribeActual(Observer<T> observer) {
 
     }
+
 }

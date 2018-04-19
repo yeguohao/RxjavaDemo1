@@ -24,4 +24,5 @@ public class ObservableObserveOn<T> extends Observable<T> implements Observer<T>
     public void onNext(T t) {
         new Thread(() -> child.onNext(t),"ObserveOn 线程").start();
     }
+
 }

@@ -25,4 +25,5 @@ public class ObservableFlatMap<T, J> extends Observable<J> implements Observer<T
         child = observer;
         parent.subscribeActual(this);
     }
+
 }

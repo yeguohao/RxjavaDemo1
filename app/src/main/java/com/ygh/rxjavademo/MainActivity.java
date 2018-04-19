@@ -7,6 +7,7 @@ import android.util.Log;
 import com.ygh.rxjavademo.i.Observable;
 import com.ygh.rxjavademo.i.Observer;
 import com.ygh.rxjavademo.i.Subscriber;
+import com.ygh.rxjavademo.opera.Combine;
 import com.ygh.rxjavademo.opera.Fun1;
 import com.ygh.rxjavademo.opera.ObservableOperator;
 
@@ -18,8 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Observable.create(
-                (Subscriber<String>) observer -> {
+        Observable.create((Subscriber<String>) observer -> {
                     Log.d(TAG, "Subscriber() 所在线程: " + Thread.currentThread().getName());
                     observer.onNext("1");
                 })
@@ -33,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
                                     observer.onNext((++j) + "");
                                 }
                         );
-                        }
-                )
+                        })
                 .lift(new ObservableOperator<String, Integer>() { // flatMap 能做的事 lift 也能做，反之亦然
                     String das;
                     @Override
@@ -55,5 +54,15 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onNext() 所在线程: " + Thread.currentThread().getName());
                     Log.d(TAG, "onNext() 结果: " + s); // 结果为 5
                 });
+
+        Observable.zip(Observable.create((Subscriber<String>) observer -> {
+            observer.onNext("123321");
+        }), Observable.create((Subscriber<Integer>) observer -> {
+            observer.onNext(10);
+        }), (obj1, obj2) -> ((String) obj1) + obj2)
+        .subscribe(s -> {
+            Log.d(TAG, "zip result: " + s);
+        });
     }
+
 }
